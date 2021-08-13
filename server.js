@@ -7,8 +7,24 @@ const cors        = require('cors');
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
+const helmet            = require('helmet');
+const mongoose          = require('mongoose');
+
+mongoose.connect(process.env.DB, { useUnifiedTopology: true, useNewUrlParser: true});
 
 const app = express();
+
+app.use(helmet({
+  frameguard: {
+    action: 'sameorigin'
+  },
+  dnsPrefetchControl: {
+    allow: false
+  },
+  referrerPolicy: {
+    policy: 'same-origin'    
+  }
+}));
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
